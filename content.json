@@ -4,7 +4,7 @@
     "copyrightYear": "2026"
   },
   "hero": {
-    "eyebrow": "Israel",
+    "eyebrow": "Israel, Tel Aviv",
     "headlineBefore": "Healing at the ",
     "headlineEmphasis": "foundations",
     "headlineAfter": " of mind and body",
@@ -22,7 +22,7 @@
       "The science now points toward a new frontier. Yessodot exists to bring it home."
     ],
     "stat1": {
-      "value": "80%",
+      "value": "0.8",
       "label": "reduction in PTSD and mTBI symptoms documented by Stanford University researchers studying ibogaine-assisted therapy — often after a single five-day treatment"
     },
     "stat2": {
