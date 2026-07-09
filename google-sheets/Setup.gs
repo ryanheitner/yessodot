@@ -75,6 +75,15 @@ function setupContentTab_(ss, tabName, fields) {
     sheet.clear();
   }
 
+  // Clear leftover validations/protections from prior script versions
+  sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET).forEach(function (p) {
+    p.remove();
+  });
+  sheet.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
+    p.remove();
+  });
+  sheet.getRange(1, 1, sheet.getMaxRows(), sheet.getMaxColumns()).clearDataValidations();
+
   // Headers
   var headers = [['Field Key', 'Label', 'Value']];
   sheet.getRange(1, 1, 1, 3).setValues(headers);
@@ -88,7 +97,7 @@ function setupContentTab_(ss, tabName, fields) {
     return [f.key, f.label, f.value];
   });
   if (rows.length > 0) {
-    sheet.getRange(2, 1, rows.length + 1, 3).setValues(rows);
+    sheet.getRange(2, 1, rows.length, 3).setValues(rows);
   }
 
   // Formatting
@@ -96,11 +105,13 @@ function setupContentTab_(ss, tabName, fields) {
   sheet.setColumnWidth(2, 280);
   sheet.setColumnWidth(3, 500);
   if (rows.length > 0) {
-    sheet.getRange(2, 3, rows.length + 1, 3).setWrap(true);
+    sheet.getRange(2, 3, rows.length, 1).setWrap(true);
+    // Keep values as text so "80%" is not converted to 0.8
+    sheet.getRange(2, 3, rows.length, 1).setNumberFormat('@');
   }
 
   // Conditional formatting: highlight empty required Value cells
-  var valueRange = sheet.getRange(2, 3, Math.max(rows.length + 1, 2), 3);
+  var valueRange = sheet.getRange(2, 3, Math.max(rows.length, 1), 1);
   var rule = SpreadsheetApp.newConditionalFormatRule()
     .whenCellEmpty()
     .setBackground('#fce4e4')
@@ -114,9 +125,12 @@ function setupContentTab_(ss, tabName, fields) {
       return f.key === 'hero.videoUrl';
     });
     if (videoRow >= 0) {
-      var cell = sheet.getRange(videoRow + 2, 3);
+      var row = videoRow + 2;
+      var cell = sheet.getRange(row, 3);
       var validation = SpreadsheetApp.newDataValidation()
-        .requireTextMatchesPattern('^\\d+$|vimeo\\.com')
+        .requireFormulaSatisfied(
+          '=AND(LEN(TRIM(C' + row + '))>0,OR(REGEXMATCH(C' + row + ',"^\\d+$"),REGEXMATCH(C' + row + ',"vimeo\\.com")))'
+        )
         .setHelpText('Enter a Vimeo video ID (numbers only) or a vimeo.com URL')
         .build();
       cell.setDataValidation(validation);
@@ -129,9 +143,12 @@ function setupContentTab_(ss, tabName, fields) {
       return f.key === 'donate.email';
     });
     if (emailRow >= 0) {
-      var emailCell = sheet.getRange(emailRow + 2, 3);
+      var row = emailRow + 2;
+      var emailCell = sheet.getRange(row, 3);
       var emailValidation = SpreadsheetApp.newDataValidation()
-        .requireTextMatchesPattern('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$')
+        .requireFormulaSatisfied(
+          '=REGEXMATCH(C' + row + ',"^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")'
+        )
         .setHelpText('Enter a valid email address')
         .build();
       emailCell.setDataValidation(emailValidation);
@@ -143,12 +160,18 @@ function setupContentTab_(ss, tabName, fields) {
 }
 
 function protectSheetColumns_(sheet, numRows) {
-  var protection = sheet.protect().setDescription('Locked structure columns');
-  protection.setUnprotectedRanges([
-    sheet.getRange(2, 3, numRows + 1, 3)
-  ]);
-  // Only owner can edit protected ranges
+  if (numRows < 1) return;
+  // Protect only columns A:B (keys + labels); column C stays editable
+  var range = sheet.getRange(1, 1, numRows + 1, 2);
+  var protection = range.protect().setDescription('Field keys & labels — do not edit');
   protection.setWarningOnly(false);
+  var editors = protection.getEditors();
+  if (editors.length > 0) {
+    protection.removeEditors(editors);
+  }
+  if (protection.canDomainEdit()) {
+    protection.setDomainEdit(false);
+  }
 }
 
 function setupInstructionsTab_(ss) {
@@ -158,6 +181,13 @@ function setupInstructionsTab_(ss) {
   } else {
     sheet.clear();
   }
+
+  sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET).forEach(function (p) {
+    p.remove();
+  });
+  sheet.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
+    p.remove();
+  });
 
   sheet.getRange(1, 1, INSTRUCTIONS_TEXT.length, 1).setValues(INSTRUCTIONS_TEXT);
   sheet.getRange(1, 1).setFontWeight('bold').setFontSize(14);
@@ -173,6 +203,13 @@ function setupPublishLogTab_(ss) {
   } else {
     sheet.clear();
   }
+
+  sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET).forEach(function (p) {
+    p.remove();
+  });
+  sheet.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
+    p.remove();
+  });
 
   var headers = [['Timestamp', 'Status', 'Message', 'Commit SHA', 'Details']];
   sheet.getRange(1, 1, 1, 5).setValues(headers);

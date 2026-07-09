@@ -11,7 +11,8 @@ function readSheet() {
     if (!sheet) {
       throw new Error('Missing tab: ' + tabName);
     }
-    var data = sheet.getDataRange().getValues();
+    // Use display values so "80%" stays "80%" (getValues would return 0.8)
+    var data = sheet.getDataRange().getDisplayValues();
     // Skip header row
     for (var i = 1; i < data.length; i++) {
       var key = String(data[i][0] || '').trim();
