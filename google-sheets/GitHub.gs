@@ -70,7 +70,32 @@ function commitFile_(path, content, message, sha) {
   return githubApi_('PUT', path, body);
 }
 
-function updateFallbackInIndex_(contentJson) {
+/**
+ * Stamp publish time so the site can prefer fresher content over a stale CDN copy.
+ */
+function stampPublishedAt_(data) {
+  if (!data.meta) data.meta = {};
+  data.meta.publishedAt = Utilities.formatDate(
+    new Date(),
+    'UTC',
+    "yyyy-MM-dd'T'HH:mm:ss'Z'"
+  );
+  return data;
+}
+
+/**
+ * Ensure every Value column is plain text so Sheets never converts 80% → 0.8.
+ */
+function ensureValueColumnsAreText_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  CONFIG.CONTENT_TABS.forEach(function (tabName) {
+    var sheet = ss.getSheetByName(tabName);
+    if (!sheet || sheet.getLastRow() < 2) return;
+    sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).setNumberFormat('@');
+  });
+}
+
+function updateIndexForPublish_(contentJson, publishedAt) {
   var indexFile = getFileFromGitHub_(CONFIG.INDEX_PATH);
   if (!indexFile) {
     Logger.log('index.html not found on GitHub — skipping fallback update');
@@ -80,26 +105,45 @@ function updateFallbackInIndex_(contentJson) {
   var html = indexFile.content;
   var minified = JSON.stringify(JSON.parse(contentJson));
   var pattern = /(<script type="application\/json" id="content-fallback">)([\s\S]*?)(<\/script>)/;
-  var match = html.match(pattern);
-
-  if (!match) {
+  if (!html.match(pattern)) {
     Logger.log('content-fallback script tag not found in index.html');
     return null;
   }
 
-  var updated = html.replace(pattern, '$1' + minified + '$3');
+  html = html.replace(pattern, function (_match, openTag, _old, closeTag) {
+    return openTag + minified + closeTag;
+  });
+
+  // Stamp revision on <html> so site.js can cache-bust fetches
+  if (/data-content-rev="[^"]*"/.test(html)) {
+    html = html.replace(/data-content-rev="[^"]*"/, 'data-content-rev="' + publishedAt + '"');
+  } else {
+    html = html.replace(/<html(\s[^>]*)?>/, function (match) {
+      if (match.indexOf('data-content-rev=') !== -1) return match;
+      return match.replace('<html', '<html data-content-rev="' + publishedAt + '"');
+    });
+  }
+
+  // Cache-bust site.js itself after publishes
+  if (/src="site\.js(\?[^"]*)?"/.test(html)) {
+    html = html.replace(/src="site\.js(\?[^"]*)?"/, 'src="site.js?v=' + encodeURIComponent(publishedAt) + '"');
+  }
+
   return {
-    content: updated,
+    content: html,
     sha: indexFile.sha
   };
 }
 
 function publishToGitHub(data) {
+  ensureValueColumnsAreText_();
+  data = stampPublishedAt_(data);
+
   var contentJson = JSON.stringify(data, null, 2) + '\n';
   var timestamp = Utilities.formatDate(new Date(), 'Asia/Jerusalem', "yyyy-MM-dd HH:mm");
   var message = 'Publish content from Google Sheet — ' + timestamp;
+  var publishedAt = data.meta.publishedAt;
 
-  // Get current content.json SHA for update
   var existing = getFileFromGitHub_(CONFIG.CONTENT_PATH);
   var contentResult = commitFile_(
     CONFIG.CONTENT_PATH,
@@ -108,10 +152,11 @@ function publishToGitHub(data) {
     existing ? existing.sha : null
   );
 
-  // Update fallback in index.html
-  var indexUpdate = updateFallbackInIndex_(contentJson);
+  var indexUpdate = updateIndexForPublish_(contentJson, publishedAt);
   var indexResult = null;
   if (indexUpdate) {
+    // Re-fetch SHA in case content.json commit changed nothing about index path
+    // (index is a separate file — existing sha from getFile is fine)
     indexResult = commitFile_(
       CONFIG.INDEX_PATH,
       indexUpdate.content,
@@ -123,7 +168,8 @@ function publishToGitHub(data) {
   return {
     contentSha: contentResult.commit.sha,
     indexSha: indexResult ? indexResult.commit.sha : null,
-    message: message
+    message: message,
+    publishedAt: publishedAt
   };
 }
 
@@ -136,7 +182,6 @@ function rollbackLastPublish() {
   var lastSuccessSha = null;
   var previousContentSha = null;
 
-  // Find last two successful publishes
   for (var i = data.length - 1; i >= 1; i--) {
     if (data[i][1] === 'Success' && data[i][3]) {
       if (!lastSuccessSha) {
@@ -152,7 +197,6 @@ function rollbackLastPublish() {
     throw new Error('No previous successful publish found to roll back to. Use Google Sheets version history instead.');
   }
 
-  // Fetch the content.json from the previous commit
   var token = getGitHubToken_();
   var owner = getConfig_('GITHUB_OWNER');
   var repo = getConfig_('GITHUB_REPO');
@@ -169,7 +213,6 @@ function rollbackLastPublish() {
   var commit = JSON.parse(response.getContentText());
   var treeUrl = commit.commit.tree.url;
 
-  // Find content.json in that commit's tree
   var treeResponse = UrlFetchApp.fetch(treeUrl + '?recursive=1', {
     headers: {
       Authorization: 'Bearer ' + token,
@@ -192,6 +235,11 @@ function rollbackLastPublish() {
   var blob = JSON.parse(blobResponse.getContentText());
   var oldContent = Utilities.newBlob(Utilities.base64Decode(blob.content)).getDataAsString();
 
+  // Re-stamp so the rolled-back content is treated as fresher than any stale CDN copy
+  var oldData = JSON.parse(oldContent);
+  stampPublishedAt_(oldData);
+  oldContent = JSON.stringify(oldData, null, 2) + '\n';
+
   var timestamp = Utilities.formatDate(new Date(), 'Asia/Jerusalem', "yyyy-MM-dd HH:mm");
   var existing = getFileFromGitHub_(CONFIG.CONTENT_PATH);
   var result = commitFile_(
@@ -201,7 +249,7 @@ function rollbackLastPublish() {
     existing ? existing.sha : null
   );
 
-  var indexUpdate = updateFallbackInIndex_(oldContent);
+  var indexUpdate = updateIndexForPublish_(oldContent, oldData.meta.publishedAt);
   if (indexUpdate) {
     commitFile_(
       CONFIG.INDEX_PATH,

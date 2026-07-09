@@ -31,7 +31,8 @@ function menuPreview() {
 
     ui.alert(
       'Preview — ready to publish',
-      getPreviewSummary(data),
+      getPreviewSummary(data) +
+        '\n\nNote: Values are read as displayed text (so 80% stays 80%).',
       ui.ButtonSet.OK
     );
   } catch (e) {
@@ -64,11 +65,19 @@ function menuPublish() {
     if (confirm !== ui.Button.YES) return;
 
     var result = publishToGitHub(data);
-    logPublish_('Success', result.message, result.contentSha, 'index: ' + (result.indexSha || 'skipped'));
+    logPublish_(
+      'Success',
+      result.message,
+      result.contentSha,
+      'index: ' + (result.indexSha || 'skipped') + '; publishedAt: ' + (result.publishedAt || '')
+    );
 
     ui.alert(
       'Published!',
-      'Changes are committed to GitHub and will be live in ~1 minute.\n\nCommit: ' + result.contentSha.substring(0, 7),
+      'Changes are on GitHub.\n\n' +
+        'The homepage loads content from raw.githubusercontent.com (not the Pages CDN), so updates should appear within seconds after a refresh.\n\n' +
+        'Commit: ' + result.contentSha.substring(0, 7) +
+        '\nStamp: ' + (result.publishedAt || ''),
       ui.ButtonSet.OK
     );
   } catch (e) {

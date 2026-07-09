@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  function getNested(obj, path) {
-    return path.split('.').reduce(function (o, key) {
-      return o && o[key] !== undefined ? o[key] : undefined;
-    }, obj);
-  }
+  // Prefer raw GitHub for content — GitHub Pages CDN can serve stale content.json for ~10 minutes.
+  var CONTENT_URLS = [
+    'https://raw.githubusercontent.com/ryanheitner/yessodot/main/content.json',
+    '/content.json'
+  ];
 
   function validateContent(data) {
     if (!data || typeof data !== 'object') return false;
@@ -25,18 +25,48 @@
     }
   }
 
+  function publishedAt(data) {
+    return (data && data.meta && data.meta.publishedAt) || '';
+  }
+
+  function pickFreshest(candidates) {
+    var best = null;
+    candidates.forEach(function (data) {
+      if (!data || !validateContent(data)) return;
+      if (!best || publishedAt(data) >= publishedAt(best)) {
+        best = data;
+      }
+    });
+    return best;
+  }
+
+  async function fetchJson(url) {
+    var bust = (document.documentElement.getAttribute('data-content-rev') || '') || String(Date.now());
+    var sep = url.indexOf('?') === -1 ? '?' : '&';
+    var res = await fetch(url + sep + 'v=' + encodeURIComponent(bust), {
+      cache: 'no-store',
+      credentials: 'omit'
+    });
+    if (!res.ok) throw new Error('fetch failed: ' + res.status + ' ' + url);
+    return res.json();
+  }
+
   async function loadContent() {
-    try {
-      var res = await fetch('/content.json');
-      if (!res.ok) throw new Error('fetch failed: ' + res.status);
-      var data = await res.json();
-      if (!validateContent(data)) throw new Error('invalid content schema');
-      return data;
-    } catch (e) {
-      var fallback = getFallbackContent();
-      if (fallback && validateContent(fallback)) return fallback;
-      throw e;
+    var fallback = getFallbackContent();
+    var fetched = [];
+
+    for (var i = 0; i < CONTENT_URLS.length; i++) {
+      try {
+        fetched.push(await fetchJson(CONTENT_URLS[i]));
+        break; // first successful source is enough; freshest pick still compares to fallback
+      } catch (e) {
+        // try next source
+      }
     }
+
+    var chosen = pickFreshest(fetched.concat([fallback]));
+    if (chosen) return chosen;
+    throw new Error('Failed to load content from network and fallback');
   }
 
   function setText(el, value) {
@@ -45,10 +75,12 @@
     }
   }
 
-  function setHtml(el, value) {
-    if (el && value !== undefined && value !== null) {
-      el.innerHTML = value;
-    }
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   function vimeoEmbedUrl(videoUrl) {
@@ -77,14 +109,6 @@
       var url = vimeoEmbedUrl(h.videoUrl);
       if (url) iframe.src = url;
     }
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
   }
 
   function hydrateCrisis(data) {

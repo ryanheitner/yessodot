@@ -11,7 +11,13 @@ function readSheet() {
     if (!sheet) {
       throw new Error('Missing tab: ' + tabName);
     }
-    // Use display values so "80%" stays "80%" (getValues would return 0.8)
+
+    // Force Value column to plain text before reading (prevents 80% → 0.8)
+    if (sheet.getLastRow() >= 2) {
+      sheet.getRange(2, 3, sheet.getLastRow() - 1, 1).setNumberFormat('@');
+    }
+
+    // Use display values so "80%" stays "80%" even if a cell was previously numeric
     var data = sheet.getDataRange().getDisplayValues();
     // Skip header row
     for (var i = 1; i < data.length; i++) {
@@ -19,9 +25,12 @@ function readSheet() {
       var value = data[i][2];
       if (!key) continue;
       if (value === null || value === undefined) value = '';
-      flat[key] = String(value);
+      flat[key] = String(value).trim();
     }
   });
+
+  // publishedAt is stamped at publish time — never read from the sheet
+  delete flat['meta.publishedAt'];
 
   return flatToNested_(flat);
 }

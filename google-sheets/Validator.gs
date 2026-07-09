@@ -150,6 +150,7 @@ function getPreviewSummary(data) {
     (flat['hero.headlineEmphasis'] || '') + (flat['hero.headlineAfter'] || ''));
   lines.push('Video: ' + (flat['hero.videoUrl'] || ''));
   lines.push('Crisis title: ' + (flat['crisis.title'] || ''));
+  lines.push('Crisis stat 1: ' + (flat['crisis.stat1.value'] || '') + ' — ' + (flat['crisis.stat1.label'] || '').substring(0, 60));
   lines.push('Donate email: ' + (flat['donate.email'] || ''));
   lines.push('');
   lines.push('Total fields: ' + Object.keys(flat).length);
