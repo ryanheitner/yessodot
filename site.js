@@ -196,16 +196,13 @@
   function leaderAvatarHtml(leader) {
     var photo = (leader.photo || '').trim();
     if (photo) {
-      var position = (leader.photoPosition || 'center center').trim();
       return (
         '<div class="leader-avatar">' +
         '<img src="' +
         escapeHtml(photo) +
         '" alt="' +
         escapeHtml(leader.name || '') +
-        '" style="object-position:' +
-        escapeHtml(position) +
-        ';">' +
+        '" width="148" height="148" loading="lazy">' +
         '</div>'
       );
     }

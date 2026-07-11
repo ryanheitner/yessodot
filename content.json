@@ -2,14 +2,13 @@
   "meta": {
     "pageTitle": "יסודות · Yessodot — Integrative Psychedelic Clinic, Israel",
     "copyrightYear": "2026",
-    "publishedAt": "2026-07-11T09:42:00Z"
+    "publishedAt": "2026-07-11T10:20:00Z"
   },
   "hero": {
     "eyebrow": "Israel",
     "headlineBefore": "Healing at the",
     "headlineEmphasis": "foundations",
     "headlineAfter": "of mind and body",
-
     "tagline": "Yessodot unites Israel's leading clinicians, researchers, and healing centers to bring psychedelic-assisted care to those conventional medicine has left behind.",
     "videoUrl": "1204006570",
     "ctaPrimary": "Support our work",
@@ -117,21 +116,21 @@
       "title": "",
       "bio": "Arik Metzer is a Tel Aviv-based psychotherapist specializing in trauma and PTSD, following a senior leadership career in high-tech. He leads Yessodot's clinical work, shaping its trauma treatment programs and evidence-informed care for veterans.",
       "photo": "assets/team-arik.jpg",
-      "photoPosition": "center 38%"
+      "photoPosition": "center center"
     },
     "leader2": {
       "name": "Boaz Wachtel",
       "title": "",
       "bio": "Boaz Wachtel is a medicalization activist and co-author of the Ibogaine Treatment Manual, with decades of experience advancing patient-centered psychedelic care. He brings advocacy expertise and institutional knowledge to Yessodot's mission of expanding veterans' access to ibogaine treatment.",
-      "photo": "assets/team-boaz.png",
-      "photoPosition": "48% 28%"
+      "photo": "assets/team-boaz.jpg",
+      "photoPosition": "center center"
     },
     "leader3": {
       "name": "David Lankri, Ph.D.",
       "title": "",
       "bio": "David Lankri is a medicinal chemist and neuropharmacologist at Columbia University, where he synthesizes novel iboga alkaloids and studies how they act on the brain. He provides Yessodot with scientific expertise on the chemistry and pharmacology of ibogaine.",
       "photo": "assets/team-david.jpg",
-      "photoPosition": "center 22%"
+      "photoPosition": "center center"
     },
     "leader4": {
       "name": "Marissa Feinberg",
@@ -145,7 +144,7 @@
       "title": "",
       "bio": "Yael Levy is an operations professional with a background in therapeutic practice. She manages Yessodot's administration, logistics, and participant coordination, creating a structured and supportive experience for veterans in the program.",
       "photo": "assets/team-yael.jpg",
-      "photoPosition": "center 25%"
+      "photoPosition": "center center"
     }
   },
   "donate": {

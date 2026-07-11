@@ -359,7 +359,7 @@
     {
       "key": "leadership.leader1.photoPosition",
       "label": "Team member 1 photo crop position (e.g. center 20%)",
-      "value": "center 38%"
+      "value": "center center"
     },
     {
       "key": "leadership.leader2.name",
@@ -379,12 +379,12 @@
     {
       "key": "leadership.leader2.photo",
       "label": "Team member 2 photo path",
-      "value": "assets/team-boaz.png"
+      "value": "assets/team-boaz.jpg"
     },
     {
       "key": "leadership.leader2.photoPosition",
       "label": "Team member 2 photo crop position",
-      "value": "48% 28%"
+      "value": "center center"
     },
     {
       "key": "leadership.leader3.name",
@@ -409,7 +409,7 @@
     {
       "key": "leadership.leader3.photoPosition",
       "label": "Team member 3 photo crop position",
-      "value": "center 22%"
+      "value": "center center"
     },
     {
       "key": "leadership.leader4.name",
@@ -459,7 +459,7 @@
     {
       "key": "leadership.leader5.photoPosition",
       "label": "Team member 5 photo crop position",
-      "value": "center 25%"
+      "value": "center center"
     }
   ],
   "Donate": [
