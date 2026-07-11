@@ -96,10 +96,11 @@
     setText(document.querySelector('[data-content="hero.eyebrow"]'), h.eyebrow);
     var headline = document.querySelector('[data-content="hero.headline"]');
     if (headline) {
+      // Always insert spaces around the emphasis — sheet values are trimmed on publish.
       headline.innerHTML =
-        escapeHtml(h.headlineBefore || '') +
-        '<em>' + escapeHtml(h.headlineEmphasis || '') + '</em>' +
-        escapeHtml(h.headlineAfter || '');
+        escapeHtml((h.headlineBefore || '').trim()) +
+        ' <em>' + escapeHtml((h.headlineEmphasis || '').trim()) + '</em> ' +
+        escapeHtml((h.headlineAfter || '').trim());
     }
     setText(document.querySelector('[data-content="hero.tagline"]'), h.tagline);
     setText(document.querySelector('[data-content="hero.ctaPrimary"]'), h.ctaPrimary);
@@ -192,38 +193,55 @@
     });
   }
 
+  function leaderAvatarHtml(leader) {
+    var photo = (leader.photo || '').trim();
+    if (photo) {
+      var position = (leader.photoPosition || 'center center').trim();
+      return (
+        '<div class="leader-avatar">' +
+        '<img src="' +
+        escapeHtml(photo) +
+        '" alt="' +
+        escapeHtml(leader.name || '') +
+        '" style="object-position:' +
+        escapeHtml(position) +
+        ';">' +
+        '</div>'
+      );
+    }
+    return (
+      '<div class="leader-avatar">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"></path></svg>' +
+      '</div>'
+    );
+  }
+
   function hydrateLeadership(data) {
     var l = data.leadership;
     setText(document.querySelector('[data-content="leadership.eyebrow"]'), l.eyebrow);
     setText(document.querySelector('[data-content="leadership.title"]'), l.title);
     setText(document.querySelector('[data-content="leadership.lead"]'), l.lead);
-    ['leader1', 'leader2', 'leader3'].forEach(function (key) {
+    ['leader1', 'leader2', 'leader3', 'leader4', 'leader5'].forEach(function (key) {
       var leader = l[key];
       var card = document.querySelector('[data-content="leadership.' + key + '"]');
-      if (!card) return;
+      if (!card || !leader) return;
       if (leader.name) {
         card.innerHTML =
-          '<div class="leader-avatar">' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"></path></svg>' +
-          '</div>' +
-          '<h3 style="font-family:\'DM Serif Display\',serif;font-size:18px;margin-bottom:4px;">' +
+          leaderAvatarHtml(leader) +
+          '<h3 class="leader-name">' +
           escapeHtml(leader.name) +
           '</h3>' +
           (leader.title
-            ? '<p style="font-size:13px;color:var(--warm-muted);margin-bottom:8px;">' +
-              escapeHtml(leader.title) +
-              '</p>'
+            ? '<p class="leader-role">' + escapeHtml(leader.title) + '</p>'
             : '') +
-          '<p style="font-size:14px;color:var(--warm-mid);line-height:1.7;font-weight:300;">' +
+          '<p class="leader-bio">' +
           escapeHtml(leader.bio) +
           '</p>';
       } else {
         card.innerHTML =
-          '<div class="leader-avatar">' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"></path></svg>' +
-          '</div>' +
+          leaderAvatarHtml(leader) +
           '<p class="leader-placeholder">' +
-          escapeHtml(leader.bio || 'Leadership bio coming soon') +
+          escapeHtml(leader.bio || 'Team bio coming soon') +
           '</p>';
       }
     });

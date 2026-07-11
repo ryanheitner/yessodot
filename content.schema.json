@@ -104,14 +104,16 @@
     },
     "leadership": {
       "type": "object",
-      "required": ["eyebrow", "title", "lead", "leader1", "leader2", "leader3"],
+      "required": ["eyebrow", "title", "lead", "leader1", "leader2", "leader3", "leader4", "leader5"],
       "properties": {
         "eyebrow": { "type": "string", "maxLength": 50 },
         "title": { "type": "string", "maxLength": 120 },
         "lead": { "type": "string", "maxLength": 500 },
         "leader1": { "$ref": "#/definitions/leader" },
         "leader2": { "$ref": "#/definitions/leader" },
-        "leader3": { "$ref": "#/definitions/leader" }
+        "leader3": { "$ref": "#/definitions/leader" },
+        "leader4": { "$ref": "#/definitions/leader" },
+        "leader5": { "$ref": "#/definitions/leader" }
       }
     },
     "donate": {
@@ -170,7 +172,9 @@
       "properties": {
         "name": { "type": "string", "maxLength": 80 },
         "title": { "type": "string", "maxLength": 120 },
-        "bio": { "type": "string", "maxLength": 800 }
+        "bio": { "type": "string", "maxLength": 800 },
+        "photo": { "type": "string", "maxLength": 200 },
+        "photoPosition": { "type": "string", "maxLength": 40 }
       }
     },
     "tier": {

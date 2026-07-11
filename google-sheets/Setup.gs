@@ -24,7 +24,7 @@ var INSTRUCTIONS_TEXT = [
   ['TIPS'],
   ['• Hero video: enter a Vimeo ID (e.g. 1204006570) or full vimeo.com URL'],
   ['• Crisis paragraphs: put each paragraph on its own line in the cell'],
-  ['• Leadership: leave Name blank to show "coming soon" placeholder'],
+  ['• Leadership / The Team: add photo paths like assets/team-arik.jpg; photoPosition crops the face (e.g. center 20%)'],
   ['• Do not paste HTML tags — plain text only'],
   [''],
   ['NEED HELP? Contact the site administrator.']

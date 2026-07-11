@@ -20,7 +20,7 @@
     {
       "key": "hero.headlineBefore",
       "label": "Headline text before emphasis",
-      "value": "Healing at the "
+      "value": "Healing at the"
     },
     {
       "key": "hero.headlineEmphasis",
@@ -30,7 +30,7 @@
     {
       "key": "hero.headlineAfter",
       "label": "Headline text after emphasis",
-      "value": " of mind and body"
+      "value": "of mind and body"
     },
     {
       "key": "hero.tagline",
@@ -77,7 +77,7 @@
     {
       "key": "crisis.stat1.label",
       "label": "Stat 1 description",
-      "value": "reduction in PTSD and mTBI symptoms documented by Stanford University researchers studying ibogaine-assisted therapy — often after a single five-day treatment"
+      "value": "Remission in PTSD and mTBI symptoms documented by Stanford University researchers studying ibogaine-assisted therapy — often after a single five-day treatment"
     },
     {
       "key": "crisis.stat2.value",
@@ -324,7 +324,7 @@
     {
       "key": "leadership.eyebrow",
       "label": "Section label",
-      "value": "Leadership"
+      "value": "The Team"
     },
     {
       "key": "leadership.title",
@@ -338,48 +338,128 @@
     },
     {
       "key": "leadership.leader1.name",
-      "label": "Leader 1 name (leave blank for placeholder)",
-      "value": ""
+      "label": "Team member 1 name",
+      "value": "Arik Metzer"
     },
     {
       "key": "leadership.leader1.title",
-      "label": "Leader 1 role/title",
+      "label": "Team member 1 role/title (optional)",
       "value": ""
     },
     {
       "key": "leadership.leader1.bio",
-      "label": "Leader 1 bio",
-      "value": "Leadership bio coming soon"
+      "label": "Team member 1 bio",
+      "value": "Arik Metzer is a Tel Aviv-based psychotherapist specializing in trauma and PTSD, following a senior leadership career in high-tech. He leads Yessodot's clinical work, shaping its trauma treatment programs and evidence-informed care for veterans."
+    },
+    {
+      "key": "leadership.leader1.photo",
+      "label": "Team member 1 photo path (e.g. assets/team-arik.jpg)",
+      "value": "assets/team-arik.jpg"
+    },
+    {
+      "key": "leadership.leader1.photoPosition",
+      "label": "Team member 1 photo crop position (e.g. center 20%)",
+      "value": "center 38%"
     },
     {
       "key": "leadership.leader2.name",
-      "label": "Leader 2 name",
-      "value": ""
+      "label": "Team member 2 name",
+      "value": "Boaz Wachtel"
     },
     {
       "key": "leadership.leader2.title",
-      "label": "Leader 2 role/title",
+      "label": "Team member 2 role/title (optional)",
       "value": ""
     },
     {
       "key": "leadership.leader2.bio",
-      "label": "Leader 2 bio",
-      "value": "Leadership bio coming soon"
+      "label": "Team member 2 bio",
+      "value": "Boaz Wachtel is a medicalization activist and co-author of the Ibogaine Treatment Manual, with decades of experience advancing patient-centered psychedelic care. He brings advocacy expertise and institutional knowledge to Yessodot's mission of expanding veterans' access to ibogaine treatment."
+    },
+    {
+      "key": "leadership.leader2.photo",
+      "label": "Team member 2 photo path",
+      "value": "assets/team-boaz.png"
+    },
+    {
+      "key": "leadership.leader2.photoPosition",
+      "label": "Team member 2 photo crop position",
+      "value": "48% 28%"
     },
     {
       "key": "leadership.leader3.name",
-      "label": "Leader 3 name",
-      "value": ""
+      "label": "Team member 3 name",
+      "value": "David Lankri, Ph.D."
     },
     {
       "key": "leadership.leader3.title",
-      "label": "Leader 3 role/title",
+      "label": "Team member 3 role/title (optional)",
       "value": ""
     },
     {
       "key": "leadership.leader3.bio",
-      "label": "Leader 3 bio",
-      "value": "Leadership bio coming soon"
+      "label": "Team member 3 bio",
+      "value": "David Lankri is a medicinal chemist and neuropharmacologist at Columbia University, where he synthesizes novel iboga alkaloids and studies how they act on the brain. He provides Yessodot with scientific expertise on the chemistry and pharmacology of ibogaine."
+    },
+    {
+      "key": "leadership.leader3.photo",
+      "label": "Team member 3 photo path",
+      "value": "assets/team-david.jpg"
+    },
+    {
+      "key": "leadership.leader3.photoPosition",
+      "label": "Team member 3 photo crop position",
+      "value": "center 22%"
+    },
+    {
+      "key": "leadership.leader4.name",
+      "label": "Team member 4 name",
+      "value": "Marissa Feinberg"
+    },
+    {
+      "key": "leadership.leader4.title",
+      "label": "Team member 4 role/title (optional)",
+      "value": ""
+    },
+    {
+      "key": "leadership.leader4.bio",
+      "label": "Team member 4 bio",
+      "value": "Marissa Feinberg is a strategic communications leader specializing in emerging therapies. She leads Yessodot's media strategy and program oversight, building awareness and support for veterans' access to ibogaine treatment."
+    },
+    {
+      "key": "leadership.leader4.photo",
+      "label": "Team member 4 photo path",
+      "value": "assets/team-marissa.jpg"
+    },
+    {
+      "key": "leadership.leader4.photoPosition",
+      "label": "Team member 4 photo crop position",
+      "value": "center center"
+    },
+    {
+      "key": "leadership.leader5.name",
+      "label": "Team member 5 name",
+      "value": "Yael Levy"
+    },
+    {
+      "key": "leadership.leader5.title",
+      "label": "Team member 5 role/title (optional)",
+      "value": ""
+    },
+    {
+      "key": "leadership.leader5.bio",
+      "label": "Team member 5 bio",
+      "value": "Yael Levy is an operations professional with a background in therapeutic practice. She manages Yessodot's administration, logistics, and participant coordination, creating a structured and supportive experience for veterans in the program."
+    },
+    {
+      "key": "leadership.leader5.photo",
+      "label": "Team member 5 photo path",
+      "value": "assets/team-yael.jpg"
+    },
+    {
+      "key": "leadership.leader5.photoPosition",
+      "label": "Team member 5 photo crop position",
+      "value": "center 25%"
     }
   ],
   "Donate": [

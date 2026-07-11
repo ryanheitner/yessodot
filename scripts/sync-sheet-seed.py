@@ -71,15 +71,31 @@ LABELS = {
     "leadership.eyebrow": "Section label",
     "leadership.title": "Section heading",
     "leadership.lead": "Intro paragraph",
-    "leadership.leader1.name": "Leader 1 name (leave blank for placeholder)",
-    "leadership.leader1.title": "Leader 1 role/title",
-    "leadership.leader1.bio": "Leader 1 bio",
-    "leadership.leader2.name": "Leader 2 name",
-    "leadership.leader2.title": "Leader 2 role/title",
-    "leadership.leader2.bio": "Leader 2 bio",
-    "leadership.leader3.name": "Leader 3 name",
-    "leadership.leader3.title": "Leader 3 role/title",
-    "leadership.leader3.bio": "Leader 3 bio",
+    "leadership.leader1.name": "Team member 1 name",
+    "leadership.leader1.title": "Team member 1 role/title (optional)",
+    "leadership.leader1.bio": "Team member 1 bio",
+    "leadership.leader1.photo": "Team member 1 photo path (e.g. assets/team-arik.jpg)",
+    "leadership.leader1.photoPosition": "Team member 1 photo crop position (e.g. center 20%)",
+    "leadership.leader2.name": "Team member 2 name",
+    "leadership.leader2.title": "Team member 2 role/title (optional)",
+    "leadership.leader2.bio": "Team member 2 bio",
+    "leadership.leader2.photo": "Team member 2 photo path",
+    "leadership.leader2.photoPosition": "Team member 2 photo crop position",
+    "leadership.leader3.name": "Team member 3 name",
+    "leadership.leader3.title": "Team member 3 role/title (optional)",
+    "leadership.leader3.bio": "Team member 3 bio",
+    "leadership.leader3.photo": "Team member 3 photo path",
+    "leadership.leader3.photoPosition": "Team member 3 photo crop position",
+    "leadership.leader4.name": "Team member 4 name",
+    "leadership.leader4.title": "Team member 4 role/title (optional)",
+    "leadership.leader4.bio": "Team member 4 bio",
+    "leadership.leader4.photo": "Team member 4 photo path",
+    "leadership.leader4.photoPosition": "Team member 4 photo crop position",
+    "leadership.leader5.name": "Team member 5 name",
+    "leadership.leader5.title": "Team member 5 role/title (optional)",
+    "leadership.leader5.bio": "Team member 5 bio",
+    "leadership.leader5.photo": "Team member 5 photo path",
+    "leadership.leader5.photoPosition": "Team member 5 photo crop position",
     "donate.eyebrow": "Section label",
     "donate.title": "Section heading",
     "donate.lead": "Intro paragraph",
@@ -128,6 +144,8 @@ def main():
 
     tabs = {}
     for key, value in flatten(content):
+        if key == "meta.publishedAt":
+            continue  # stamped at publish time — never seeded into the sheet
         section = key.split(".")[0]
         tab = TAB_MAP.get(section, section.title())
         tabs.setdefault(tab, []).append(

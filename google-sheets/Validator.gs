@@ -68,8 +68,20 @@ var FIELD_RULES = {
   'leadership.title': { required: true, maxLength: 120 },
   'leadership.lead': { required: true, maxLength: 500 },
   'leadership.leader1.bio': { required: true, maxLength: 800 },
+  'leadership.leader1.photo': { required: false, maxLength: 200 },
+  'leadership.leader1.photoPosition': { required: false, maxLength: 40 },
   'leadership.leader2.bio': { required: true, maxLength: 800 },
+  'leadership.leader2.photo': { required: false, maxLength: 200 },
+  'leadership.leader2.photoPosition': { required: false, maxLength: 40 },
   'leadership.leader3.bio': { required: true, maxLength: 800 },
+  'leadership.leader3.photo': { required: false, maxLength: 200 },
+  'leadership.leader3.photoPosition': { required: false, maxLength: 40 },
+  'leadership.leader4.bio': { required: true, maxLength: 800 },
+  'leadership.leader4.photo': { required: false, maxLength: 200 },
+  'leadership.leader4.photoPosition': { required: false, maxLength: 40 },
+  'leadership.leader5.bio': { required: true, maxLength: 800 },
+  'leadership.leader5.photo': { required: false, maxLength: 200 },
+  'leadership.leader5.photoPosition': { required: false, maxLength: 40 },
   'donate.eyebrow': { required: true, maxLength: 50 },
   'donate.title': { required: true, maxLength: 120 },
   'donate.lead': { required: true, maxLength: 500 },
@@ -146,8 +158,9 @@ function isValidVimeo_(val) {
 function getPreviewSummary(data) {
   var flat = nestedToFlat_(data);
   var lines = [];
-  lines.push('Hero headline: ' + (flat['hero.headlineBefore'] || '') +
-    (flat['hero.headlineEmphasis'] || '') + (flat['hero.headlineAfter'] || ''));
+  lines.push('Hero headline: ' + (flat['hero.headlineBefore'] || '').trim() +
+    ' ' + (flat['hero.headlineEmphasis'] || '').trim() + ' ' +
+    (flat['hero.headlineAfter'] || '').trim());
   lines.push('Video: ' + (flat['hero.videoUrl'] || ''));
   lines.push('Crisis title: ' + (flat['crisis.title'] || ''));
   lines.push('Crisis stat 1: ' + (flat['crisis.stat1.value'] || '') + ' — ' + (flat['crisis.stat1.label'] || '').substring(0, 60));
