@@ -193,13 +193,15 @@
     });
   }
 
-  function leaderAvatarHtml(leader) {
+  function leaderAvatarHtml(leader, publishedAtStr) {
     var photo = (leader.photo || '').trim();
     if (photo) {
+      // Append cache buster to force browsers to fetch the updated image
+      var photoUrl = photo + (publishedAtStr ? '?v=' + encodeURIComponent(publishedAtStr) : '');
       return (
         '<div class="leader-avatar">' +
         '<img src="' +
-        escapeHtml(photo) +
+        escapeHtml(photoUrl) +
         '" alt="' +
         escapeHtml(leader.name || '') +
         '" width="148" height="148" loading="lazy">' +
@@ -215,6 +217,7 @@
 
   function hydrateLeadership(data) {
     var l = data.leadership;
+    var pubAt = data.meta && data.meta.publishedAt ? data.meta.publishedAt : '';
     setText(document.querySelector('[data-content="leadership.eyebrow"]'), l.eyebrow);
     setText(document.querySelector('[data-content="leadership.title"]'), l.title);
     setText(document.querySelector('[data-content="leadership.lead"]'), l.lead);
@@ -224,7 +227,7 @@
       if (!card || !leader) return;
       if (leader.name) {
         card.innerHTML =
-          leaderAvatarHtml(leader) +
+          leaderAvatarHtml(leader, pubAt) +
           '<h3 class="leader-name">' +
           escapeHtml(leader.name) +
           '</h3>' +
@@ -236,7 +239,7 @@
           '</p>';
       } else {
         card.innerHTML =
-          leaderAvatarHtml(leader) +
+          leaderAvatarHtml(leader, pubAt) +
           '<p class="leader-placeholder">' +
           escapeHtml(leader.bio || 'Team bio coming soon') +
           '</p>';
