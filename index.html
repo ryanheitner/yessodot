@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-content-rev="2026-07-18T21:12:00Z" lang="en">
+<html data-content-rev="2026-07-18T21:12:00Z" data-show-team="false" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -471,7 +471,11 @@
     flex: 1;
   }
 
-  /* LEADERSHIP / THE TEAM */
+  /* LEADERSHIP / THE TEAM — set data-show-team="true" on <html> to display */
+  html:not([data-show-team="true"]) #team,
+  html:not([data-show-team="true"]) .nav-links li:has(a[href="#team"]) {
+    display: none;
+  }
   .leadership-section { background: var(--off-white); }
   .leadership-inner { max-width: 1100px; margin: 0 auto; }
   .leadership-header { margin-bottom: 3rem; }
