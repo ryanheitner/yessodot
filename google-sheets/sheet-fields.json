@@ -235,7 +235,7 @@
     {
       "key": "evidence.lead",
       "label": "Intro paragraph",
-      "value": "In the RESET-VET observational program, veterans were assessed on five validated clinical measures before and after a single ibogaine-assisted treatment. Across the board, symptom scores fell — most dropping below the thresholds that define clinical disorder."
+      "value": "In the RESET-VET observational program, veterans were assessed on two validated clinical measures before and after a single ibogaine-assisted treatment. Symptom scores fell across both measures, with post-treatment results below the PTSD clinical threshold."
     },
     {
       "key": "evidence.source",
@@ -245,17 +245,17 @@
     {
       "key": "evidence.captionBold",
       "label": "Chart caption (bold part)",
-      "value": "RESET-VET: symptom trajectories before and after ibogaine treatment."
+      "value": "RESET-VET: global disability and PTSD symptom trajectories."
     },
     {
       "key": "evidence.caption",
       "label": "Chart caption (regular part)",
-      "value": "Group means across all five measures — global disability (WHODAS-2.0), PTSD (PCL-5), depression (PHQ-9), anxiety (GAD-7), and post-concussion symptoms (RPQ) — declined from pre-treatment screening to post-treatment follow-up, with most patients falling below established clinical thresholds. Preliminary observational data (n = 7 veterans with post-treatment follow-up)."
+      "value": "Group means across global disability (WHODAS-2.0) and PTSD (PCL-5) declined from pre-treatment screening to post-treatment follow-up. Preliminary observational data (n = 7 veterans with post-treatment follow-up)."
     },
     {
       "key": "evidence.chartAlt",
       "label": "Chart accessibility description",
-      "value": "RESET-VET symptom trajectories before and after ibogaine treatment across Global Disability, PTSD, Depression, Anxiety, and Post-Concussion Symptoms — group means decline across all five measures"
+      "value": "RESET-VET symptom trajectories before and after ibogaine treatment across Global Disability and PTSD — group means decline"
     }
   ],
   "Partners": [
